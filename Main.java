@@ -1,93 +1,66 @@
-public class Main {
-    public static void main(String[] args) {
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 
-        specialPizza p = new specialPizza(false);
-       
-        p.getBill();
+public class Main {
+    public static void main(String[] args) throws InterruptedException {
+
+        // Open Chrome
+        WebDriver driver = new ChromeDriver();
+
+        // Open the login page
+        driver.get("https://practicetestautomation.com/practice-test-login/");
+
+        // === Test 1: Positive Login ===
+
+        driver.findElement(By.id("username")).sendKeys("student");
+        driver.findElement(By.id("password")).sendKeys("Password123");
+        driver.findElement(By.id("submit")).click();
+
+        if (driver.getCurrentUrl().contains("logged-in-successfully")) {
+            System.out.println("✅ Test 1 Passed: Login successful!");
+        } else {
+            System.out.println("❌ Test 1 Failed");
+        }
+
+        Thread.sleep(5000);
+        driver.quit();
+
+        // === Test 2: Negative Username ===
+
+
+        driver = new ChromeDriver();
+        driver.get("https://practicetestautomation.com/practice-test-login/");
+        driver.findElement(By.id("username")).sendKeys("wrongUser");
+        driver.findElement(By.id("password")).sendKeys("Password123");
+        driver.findElement(By.id("submit")).click();
+
+        WebElement error1 = driver.findElement(By.id("error"));
+        if (error1.isDisplayed() && error1.getText().equals("Your username is invalid!")) {
+            System.out.println("✅ Test 2 Passed: Wrong username handled!");
+        } else {
+            System.out.println("❌ Test 2 Failed");
+        }
+
+        driver.quit();
+
+        // === Test 3: Negative Password ===
+
+
+        driver = new ChromeDriver();
+        driver.get("https://practicetestautomation.com/practice-test-login/");
+        driver.findElement(By.id("username")).sendKeys("student");
+        driver.findElement(By.id("password")).sendKeys("wrongPass");
+        driver.findElement(By.id("submit")).click();
+
+        WebElement error2 = driver.findElement(By.id("error"));
+        if (error2.isDisplayed() && error2.getText().equals("Your password is invalid!")) {
+            System.out.println("✅ Test 3 Passed: Wrong password handled!");
+        } else {
+            System.out.println("❌ Test 3 Failed");
+        }
+
+        driver.quit();
     }
 }
-
-
-
-
-
-// import javax.swing.*;
-// import java.awt.*;
-// import java.awt.event.ActionEvent;
-// import java.awt.event.ActionListener;
-
-// public class Main {
-//     public static void main(String[] args) {
-//         // Create the frame
-//         JFrame frame = new JFrame("Pizza Order");
-//         frame.setSize(400, 300);
-//         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//         frame.setLayout(new GridLayout(6, 1));
-
-//         // Checkbox for pizza type
-//         JCheckBox vegCheckbox = new JCheckBox("Vegetarian Pizza");
-//         frame.add(vegCheckbox);
-
-//         JCheckBox nonvegCheckbox = new JCheckBox("NonVegetarian Pizza");
-//         frame.add(nonvegCheckbox);
-
-//         // Checkbox for extra cheese
-//         JCheckBox cheeseCheckbox = new JCheckBox("Add Extra Cheese (+₹100)");
-//         frame.add(cheeseCheckbox);
-
-//         // Checkbox for extra toppings
-//         JCheckBox toppingsCheckbox = new JCheckBox("Add Extra Toppings (+₹150)");
-//         frame.add(toppingsCheckbox);
-
-//         // Checkbox for takeaway
-//         JCheckBox takeawayCheckbox = new JCheckBox("Takeaway (+₹30)");
-//         frame.add(takeawayCheckbox);
-
-//         // Button to calculate bill
-//         JButton calculateButton = new JButton("Calculate Bill");
-//         frame.add(calculateButton);
-
-//         // Text area to display the bill
-//         JTextArea billTextArea = new JTextArea();
-//         billTextArea.setEditable(false);
-//         frame.add(new JScrollPane(billTextArea));
-
-//         // Action listener for the "Calculate Bill" button
-//         calculateButton.addActionListener(new ActionListener() {
-//             @Override
-//             public void actionPerformed(ActionEvent e) {
-//                 boolean isVeg = vegCheckbox.isSelected();
-//                 Pizza pizza = new Pizza(isVeg);
-
-//                 if (cheeseCheckbox.isSelected()) {
-//                     pizza.addExtraCheese();
-//                 }
-//                 if (toppingsCheckbox.isSelected()) {
-//                     pizza.addExtraToppings();
-//                 }
-//                 if (takeawayCheckbox.isSelected()) {
-//                     pizza.takeAway();
-//                 }
-
-//                 // Display the bill
-//                 billTextArea.setText(""); // Clear previous bill
-//                 billTextArea.append("Base Pizza Price: ₹" + pizza.getBasePizzaPrice() + "\n");
-
-//                 if (cheeseCheckbox.isSelected()) {
-//                     billTextArea.append("Extra Cheese: ₹100\n");
-//                 }
-//                 if (toppingsCheckbox.isSelected()) {
-//                     billTextArea.append("Extra Toppings: ₹150\n");
-//                 }
-//                 if (takeawayCheckbox.isSelected()) {
-//                     billTextArea.append("Takeaway: ₹30\n");
-//                 }
-
-//                 billTextArea.append("Total Bill: ₹" + pizza.getPrice() + "\n");
-//             }
-//         });
-
-//         // Make the frame visible
-//         frame.setVisible(true);
-//     }
-// }
